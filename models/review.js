@@ -14,12 +14,17 @@ module.exports = (sequelize, DataTypes) => {
       Review.belongsTo(models.Product,{
         foreignKey:'product_id'
       });
+      Review.belongsTo(models.User,{
+        foreignKey:'user_id'
+      });
+      
     }
   }
   Review.init({
     title: DataTypes.STRING,
     description: DataTypes.STRING,
-    product_id: DataTypes.INTEGER
+    product_id: DataTypes.INTEGER,
+    user_id: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Review',
