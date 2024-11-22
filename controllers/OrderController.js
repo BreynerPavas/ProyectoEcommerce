@@ -39,6 +39,41 @@ const OrderController = {
           console.error(error);
           res.status(500).send({ message: "There was a problem", error });
         }
+      },
+      async getByUser_idProducts(req,res){
+        try {
+          // const orders = await Order.findAll({
+          //     attributes: ["createdAt"], // Atributos de la tabla Order
+          //     where: {
+          //         user_id: req.user.id // Condición para filtrar por user_id
+          //     },
+          //     include: [
+          //         {
+          //             model: Product, // Incluye los productos asociados
+          //             attributes: ["name_product", "price"], // Atributos del modelo Product
+          //             through: { attributes: [] } // Excluye atributos de la tabla de unión
+          //         }
+          //     ]
+          // });
+          console.log(req.user);
+          
+          const orders = await Order.findAll({
+            where:{
+              user_id : req.user.id
+            },
+            include: [
+                      {
+                          model: Product, // Incluye los productos asociados
+                          attributes: ["name_product", "price"], // Atributos del modelo Product
+                          through: { attributes: [] } // Excluye atributos de la tabla de unión
+                      }
+                  ]
+          });
+          res.status(201).send({ orders });
+      } catch (error) {
+          console.error(error);
+          res.status(500).send({ message: "There was a problem", error });
+      }
       }
 }
 module.exports = OrderController;

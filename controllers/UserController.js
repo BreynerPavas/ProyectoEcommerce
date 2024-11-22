@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require('jsonwebtoken');
 const { jwt_secret } = require('../config/config.json')['development']
 const {Op}= Sequelize
+
 const UserController = {
   async create(req, res) {
     try {
@@ -86,7 +87,7 @@ const UserController = {
         await Token.destroy({
             where: {
                 [Op.and]: [
-                    { UserId: req.user.id },
+                    { user_id: req.user.id },
                     { token: req.headers.authorization }
                 ]
             }

@@ -1,4 +1,4 @@
-const { Category ,Sequelize } = require("../models/index");
+const { Category ,Sequelize,Product } = require("../models/index");
 const {Op} = Sequelize
 const CategoryController = {
     async create(req, res) { //Endpoint para crear una categoría
@@ -69,5 +69,21 @@ const CategoryController = {
           res.status(500).send({ message: "Ha habido un error", error });
         }
       },
+      async getWithIdAllProducts(req,res){
+        try {
+          const category = await Category.findByPk(req.params.id,{
+            attributes:["name_category","description"],
+            include:{
+              model:Product,
+              attributes: ["name_product"],
+              through: { attributes: [] }
+            }
+          });
+          res.status(201).send({category});
+        } catch (error) {
+          console.error(error);
+          res.status(500).send({ message: "There was a problem", error });
+        }
+      }
 }
 module.exports = CategoryController;

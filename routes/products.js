@@ -12,7 +12,9 @@ router.get("/name/:name",ProductController.getByName);
 router.get("/priceAbove/:price",ProductController.getByPriceAbove);
 router.get("/priceBelow/:price",ProductController.getByPriceBelow);
 router.get("/priceHigherToLower",ProductController.getByPriceHigherToLower);
-router.get("/getWithIdCategories/id/:id",ProductController.getWithIdCategories)
+router.get("/getWithIdCategories/id/:id",ProductController.getWithIdCategories);
+router.get("/getCategoriesAndReviews",ProductController.getCategoriesAndReviews);
+router.get("/getByIdCategoriesAndReviews/id/:id",ProductController.getByIdCategoriesAndReviews);
 
 
 

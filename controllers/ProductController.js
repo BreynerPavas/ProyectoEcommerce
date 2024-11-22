@@ -1,4 +1,4 @@
-const { Product ,Sequelize, Category } = require("../models/index");
+const { Product ,Sequelize, Category,Review,User } = require("../models/index");
 const {Op} = Sequelize
 
 const ProductController = {
@@ -134,7 +134,54 @@ const ProductController = {
           console.error(error);
           res.status(500).send({ message: "There was a problem", error });
         }
-      }
+      },
+      async getCategoriesAndReviews(req,res){
+        try {
+          const products = await Product.findAll({
+            attributes:["name_product","price"],
+            include:[{
+              model:Category,
+              attributes: ["name_category"],
+              through: { attributes: [] }
+            },{
+              model:Review,
+              attributes:["title","description"],
+              include:{
+                model:User,
+                attributes: ["name","role"]
+              }
+            }]
+        });
+        res.status(200).send(products);
+        } catch (error) {
+          console.error(error);
+          res.status(500).send({ message: "There was a problem", error });
+        }
+      },
+      async getByIdCategoriesAndReviews(req,res){
+        try {
+          const products = await Product.findByPk(req.params.id,{
+            attributes:["name_product","price"],
+            include:[{
+              model:Category,
+              attributes: ["name_category"],
+              through: { attributes: [] }
+            },{
+              model:Review,
+              attributes:["title","description"],
+              include:{
+                model:User,
+                attributes: ["name","role"]
+              }
+            }]
+        });
+        
+        res.status(200).send(products);
+        } catch (error) {
+          console.error(error);
+          res.status(500).send({ message: "There was a problem", error });
+        }
+      },
       
 }
 
