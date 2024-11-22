@@ -1,4 +1,4 @@
-const { Product ,Sequelize } = require("../models/index");
+const { Product ,Sequelize, Category } = require("../models/index");
 const {Op} = Sequelize
 
 const ProductController = {
@@ -10,8 +10,9 @@ const ProductController = {
             if (!name_product || !price) {
                 return res.status(400).send({ message: "Todos los campos son obligatorios: name_product y price." });
             }
-
+          
           const product = await Product.create(req.body);
+          await product.addCategory(req.body.categories_id)
           res.status(201).send({ message: "Publicación creada", Product });
         } catch (error) {
           console.error(error);
@@ -118,6 +119,23 @@ const ProductController = {
             res.status(500).send({ message: "There was a problem", error });
           }
       },
+      async getWithIdCategories(req,res){
+        try {
+          const product = await Product.findByPk(req.params.id,{
+            attributes:["name_product","price"],
+            include:{
+              model:Category,
+              attributes: ["name_category"],
+              through: { attributes: [] }
+            }
+          });
+          res.status(201).send({product});
+        } catch (error) {
+          console.error(error);
+          res.status(500).send({ message: "There was a problem", error });
+        }
+      }
+      
 }
 
 module.exports = ProductController;

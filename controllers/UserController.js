@@ -7,6 +7,12 @@ const UserController = {
   async create(req, res) {
     try {
       // console.log(req.body)
+      const { name, email,password } = req.body;
+
+            // Validacion
+            if (!name || !email || !password) {
+                return res.status(400).send({ message: "Todos los campos son obligatorios" });
+            }
       req.body.password = await bcrypt.hash(req.body.password, 10);
       const user = await User.create(req.body);
       res.status(201).send({ message: "Usuario creado", user });

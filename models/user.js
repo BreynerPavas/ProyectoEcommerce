@@ -13,8 +13,12 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       User.hasMany(models.Review,{
         foreignKey:'user_id'
-      });
+      }); 
+      User.hasMany(models.Order,{
+        foreignKey:'user_id'
+      })
     }
+
   }
   User.init({
     name: DataTypes.STRING,
